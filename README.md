@@ -1,6 +1,6 @@
 # dragonvoid
 
-A unfinished game project from school (2017)
+An unfinished game project from school (2017)
 
 ![Gameplay screenshot](/screenshot.png "Gameplay screenshot")
 
@@ -12,7 +12,7 @@ You can download and run the game using the nix package manager
 nix run github:Zebreus/dragonvoid
 ```
 
-The arena mode is less unfinished then the main game, you can launch that using:
+The arena mode is less unfinished than the main game, you can launch that using:
 
 ```bash
 nix run github:Zebreus/dragonvoid#arena
