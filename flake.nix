@@ -2,7 +2,7 @@
   description = "An old (2017) unfinished game project from school";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -14,7 +14,7 @@
           pkgs = pkgs;
         }));
       in
-      rec {
+      {
         packages.dragonvoid-jar = builds.dragonvoid-jar;
         packages.default = builds.dragonvoid;
 
@@ -26,7 +26,11 @@
           drv = builds.dragonvoid;
           exePath = "/bin/dragonvoid-arena";
         };
-        apps.default = apps.main;
+        apps.default = self.apps.${system}.main;
+
+        devShells.default = pkgs.mkShell {
+          buildInputs = [ pkgs.jdk17 pkgs.gradle ];
+        };
       }
     );
 }

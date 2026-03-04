@@ -1,3 +1,5 @@
 result
 build/
+.gradle/
+libs/
 *.class

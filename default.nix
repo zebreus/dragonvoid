@@ -1,71 +1,60 @@
 { pkgs ? import <nixpkgs> { }
-, jdk ? pkgs.jdk8
-, jre ? pkgs.jre8
 }:
 
 let
+  jdk = pkgs.jdk17;
+  jre = pkgs.jre_minimal.override {
+    jdk = pkgs.jdk17;
+    modules = [ "java.base" "java.desktop" "java.logging" ];
+  };
+  gradle = pkgs.gradle;
+
+  # Pre-fetch Maven dependencies for reproducible offline builds
   gson = pkgs.fetchurl {
     url = "https://repo1.maven.org/maven2/com/google/code/gson/gson/2.8.9/gson-2.8.9.jar";
-    sha256 = "sha256-ixNEokViKuFaLjuSMrvJLSWnUfGRqnOxEqFaDQsOj/Q=";
+    hash = "sha256-05mSkYVd5JXJTHQ3YbirUXbP6r4oGlqw2OjUUyb9cD4=";
   };
   json-java = pkgs.fetchurl {
     url = "https://repo1.maven.org/maven2/org/json/json/20211205/json-20211205.jar";
-    sha256 = "sha256-MBq8e0UJMEEmujic1ye4yEQsGMCFVGp5UsoHYJcMaEI=";
+    hash = "sha256-fzjWH7t+Kv3DHGvoZXIO5PyKDDwU+sTz7Ef9Pes5OcY=";
   };
 
   dragonvoid-jar = pkgs.stdenv.mkDerivation {
     pname = "dragonvoid-jar";
     version = "0.1.0";
-    src = ./.;
+    src = pkgs.lib.cleanSource ./.;
 
-    nativeBuildInputs = [ jdk pkgs.gnutar pkgs.gzip ];
+    nativeBuildInputs = [ gradle jdk ];
 
     buildPhase = ''
-      # Compile Java sources
-      find src -name '*.java' > /tmp/sources.txt
-      mkdir -p build/classes
-      ${jdk}/bin/javac \
-        -source 8 -target 8 \
-        -encoding ISO-8859-1 \
-        -cp "${gson}:${json-java}" \
-        -d build/classes \
-        @/tmp/sources.txt
+      export GRADLE_USER_HOME=$(mktemp -d)
+      export HOME=$(mktemp -d)
 
-      # Create JAR with compiled classes and resources
-      mkdir -p build/jar
-      cp -r build/classes/* build/jar/
-      cp -r res build/jar/
+      # Set up a local flat-dir repository with pre-fetched dependencies
+      mkdir -p libs
+      cp ${gson} libs/gson-2.8.9.jar
+      cp ${json-java} libs/json-20211205.jar
 
-      # Extract world chunk data
-      tar xzf build/jar/res/worlds.tar.gz -C build/jar/
-      rm build/jar/res/worlds.tar.gz
-
-      # Create manifest
-      echo "Manifest-Version: 1.0" > build/MANIFEST.MF
-      echo "Main-Class: tbs.StartMainMenu" >> build/MANIFEST.MF
-
-      cd build/jar
-      ${jdk}/bin/jar cfm ../DragonVoid.jar ../MANIFEST.MF .
+      # Build the JAR using Gradle in offline mode with local deps
+      gradle --no-daemon --offline jar
     '';
 
     installPhase = ''
       mkdir -p $out
-      cp build/DragonVoid.jar $out/DragonVoid.jar
+      cp build/libs/dragonvoid-*.jar $out/DragonVoid.jar
     '';
   };
 
   dragonvoid = pkgs.stdenv.mkDerivation {
     pname = "dragonvoid";
     version = "0.1.0";
-    src = ./.;
+
+    dontUnpack = true;
 
     nativeBuildInputs = [ pkgs.makeWrapper ];
 
-    buildInputs = [ dragonvoid-jar jre pkgs.coreutils ];
-
     installPhase = ''
-      mkdir -p $out/lib
-      mkdir -p $out/bin
+      mkdir -p $out/lib $out/bin
       cp ${dragonvoid-jar}/DragonVoid.jar $out/lib/
 
       cat <<'WRAPPER' > $out/bin/dragonvoid
