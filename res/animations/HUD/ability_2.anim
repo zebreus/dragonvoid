@@ -1,0 +1,15 @@
+3
+HUD/
+ability_2_normal
+ability_2_hover
+ability_2_click
+3
+	normal
+	1
+		0 500
+	hover
+	1
+		1 500
+	click
+	1
+		2 500

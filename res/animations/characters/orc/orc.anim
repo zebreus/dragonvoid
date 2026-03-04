@@ -1,0 +1,27 @@
+8
+characters/orc/
+orc_up_1
+orc_up_2
+orc_down_1
+orc_down_2
+orc_right_1
+orc_right_2
+orc_left_1
+orc_left_2
+4
+	up
+	2
+		0 500
+		1 500
+	down
+	2
+		2 500
+		3 500
+	right
+	2
+		4 500
+		5 500
+	left
+	2
+		6 500
+		7 500

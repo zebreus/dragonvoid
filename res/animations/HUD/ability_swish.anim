@@ -1,0 +1,15 @@
+3
+HUD/
+ability_swish_normal
+ability_swish_hover
+ability_swish_click
+3
+	normal
+	1
+		0 500
+	hover
+	1
+		1 500
+	click
+	1
+		2 500

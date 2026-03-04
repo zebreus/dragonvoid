@@ -1,0 +1,27 @@
+8
+characters/player/
+player_up_1
+player_up_2
+player_down_1
+player_down_2
+player_right_1
+player_right_2
+player_left_1
+player_left_2
+4
+	up
+	2
+		0 500
+		1 500
+	down
+	2
+		2 500
+		3 500
+	right
+	2
+		4 500
+		5 500
+	left
+	2
+		6 500
+		7 500

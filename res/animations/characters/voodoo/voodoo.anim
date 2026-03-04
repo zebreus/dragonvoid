@@ -1,0 +1,27 @@
+8
+characters/voodoo/
+voodoo_up_1
+voodoo_up_2
+voodoo_down_1
+voodoo_down_2
+voodoo_right_1
+voodoo_right_2
+voodoo_left_1
+voodoo_left_2
+4
+	up
+	2
+		0 500
+		1 500
+	down
+	2
+		2 500
+		3 500
+	right
+	2
+		4 500
+		5 500
+	left
+	2
+		6 500
+		7 500
