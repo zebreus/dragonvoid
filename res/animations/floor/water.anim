@@ -4,8 +4,8 @@ water_wave_01
 water_wave_02
 water_wave_03
 1
-default
-3
-0 300
-1 300
-2 300
+	default
+	3
+		0 300
+		1 300
+		2 300
