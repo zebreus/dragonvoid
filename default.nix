@@ -18,7 +18,7 @@ let
     version = "0.1.0";
     src = ./.;
 
-    nativeBuildInputs = [ jdk ];
+    nativeBuildInputs = [ jdk pkgs.gnutar pkgs.gzip ];
 
     buildPhase = ''
       # Compile Java sources
@@ -35,6 +35,10 @@ let
       mkdir -p build/jar
       cp -r build/classes/* build/jar/
       cp -r res build/jar/
+
+      # Extract world chunk data
+      tar xzf build/jar/res/worlds.tar.gz -C build/jar/
+      rm build/jar/res/worlds.tar.gz
 
       # Create manifest
       echo "Manifest-Version: 1.0" > build/MANIFEST.MF
