@@ -45,51 +45,31 @@ let
     '';
   };
 
-  dragonvoid = pkgs.stdenv.mkDerivation {
-    pname = "dragonvoid";
-    version = "0.1.0";
+  mkWrapper = name: mainClass: pkgs.writeShellScriptBin name ''
+    JAR="${dragonvoid-jar}/DragonVoid.jar"
+    SAVE_DIR="''${SAVE_DIR:-$HOME/.dragonvoid}"
+    WORK_DIR=$(mktemp -d)
+    trap 'rm -rf "$WORK_DIR"' EXIT
 
-    dontUnpack = true;
+    cd "$WORK_DIR"
+    ${pkgs.unzip}/bin/unzip -q "$JAR" "res/*" -d "$WORK_DIR"
 
-    nativeBuildInputs = [ pkgs.makeWrapper ];
+    if [ ! -d "$SAVE_DIR" ]; then
+      mkdir -p "$SAVE_DIR"
+      cp -r "$WORK_DIR/res/saves/"* "$SAVE_DIR"
+    fi
+    rm -rf "$WORK_DIR/res/saves"
+    ln -s "$SAVE_DIR" "$WORK_DIR/res/saves"
 
-    installPhase = ''
-      mkdir -p $out/lib $out/bin
-      cp ${dragonvoid-jar}/DragonVoid.jar $out/lib/
+    ${jre}/bin/java -cp "$JAR" ${mainClass}
+  '';
 
-      cat <<'WRAPPER' > $out/bin/dragonvoid
-      #!/usr/bin/env bash
-      SAVE_DIR=''${SAVE_DIR-"$HOME/.dragonvoid/"}
-      WORK_DIR=$(mktemp -d)
-      cd "$WORK_DIR"
-      ${pkgs.unzip}/bin/unzip -q $out/lib/DragonVoid.jar "res/*" -d "$WORK_DIR"
-      if ! test -e "$SAVE_DIR"; then
-          mkdir -p "$SAVE_DIR"
-          cp -r "$WORK_DIR/res/saves/"* "$SAVE_DIR"
-      fi
-      rm -rf "$WORK_DIR/res/saves"
-      ln -s "$SAVE_DIR" "$WORK_DIR/res/saves"
-      ${jre}/bin/java -cp $out/lib/DragonVoid.jar tbs.StartMainMenu
-      WRAPPER
-
-      cat <<'WRAPPER' > $out/bin/dragonvoid-arena
-      #!/usr/bin/env bash
-      SAVE_DIR=''${SAVE_DIR-"$HOME/.dragonvoid/"}
-      WORK_DIR=$(mktemp -d)
-      cd "$WORK_DIR"
-      ${pkgs.unzip}/bin/unzip -q $out/lib/DragonVoid.jar "res/*" -d "$WORK_DIR"
-      if ! test -e "$SAVE_DIR"; then
-          mkdir -p "$SAVE_DIR"
-          cp -r "$WORK_DIR/res/saves/"* "$SAVE_DIR"
-      fi
-      rm -rf "$WORK_DIR/res/saves"
-      ln -s "$SAVE_DIR" "$WORK_DIR/res/saves"
-      ${jre}/bin/java -cp $out/lib/DragonVoid.jar tbs.StartArenaMode
-      WRAPPER
-
-      chmod 755 $out/bin/dragonvoid
-      chmod 755 $out/bin/dragonvoid-arena
-    '';
+  dragonvoid = pkgs.symlinkJoin {
+    name = "dragonvoid";
+    paths = [
+      (mkWrapper "dragonvoid" "tbs.StartMainMenu")
+      (mkWrapper "dragonvoid-arena" "tbs.StartArenaMode")
+    ];
   };
 in
 {

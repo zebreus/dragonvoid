@@ -67,10 +67,21 @@ tasks.register('extractWorlds', Copy) {
     into layout.buildDirectory.dir("resources/main")
 }
 
+// Task to extract worlds.tar.gz into res/ for local development (running with java -jar)
+tasks.register('extractWorldsLocal', Copy) {
+    def worldsTar = file('res/worlds.tar.gz')
+    from tarTree(resources.gzip(worldsTar))
+    into '.'
+}
+
 tasks.named('processResources') {
     finalizedBy 'extractWorlds'
 }
 
 tasks.named('jar') {
     dependsOn 'extractWorlds'
+}
+
+tasks.named('run') {
+    dependsOn 'extractWorldsLocal'
 }
