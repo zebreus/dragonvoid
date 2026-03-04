@@ -24,6 +24,7 @@ public class Label extends MenuItem {
 		textSprites = new LinkedList<Sprite>();
 		for (int a = 0; a < text.length(); a++) {
 			String sub = text.substring(a, a + 1).toLowerCase();
+			if (sub.equals(" ")) sub = "space";
 			try {
 				Sprite s = new Sprite("fonts/" + sub);
 				textSprites.add(s);
