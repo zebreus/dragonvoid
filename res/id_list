@@ -1,0 +1,17 @@
+0:dirt
+1:dirt-grass_bottom
+2:dirt-grass_bottom,left
+3:dirt-grass_left
+4:dirt-grass_right
+5:dirt-grass_right,bottom
+6:dirt-grass_right,bottom,left
+7:dirt-grass_right,left
+8:dirt-grass_top
+9:dirt-grass_top,bottom
+10:dirt-grass_top,bottom,left
+11:dirt-grass_top,left
+12:dirt-grass_top,right
+13:dirt-grass_top,right,bottom
+14:dirt-grass_top,right,bottom,left
+15:dirt-grass_top,right,left
+16:grass

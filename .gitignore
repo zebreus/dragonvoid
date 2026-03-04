@@ -1,1 +1,6 @@
 result
+build/
+.gradle/
+libs/
+*.class
+res/worlds/

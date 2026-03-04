@@ -1,56 +1,77 @@
 { pkgs ? import <nixpkgs> { }
 }:
 
-pkgs.stdenv.mkDerivation {
-  name = "dragonvoid";
-  src = ./.;
+let
+  jdk = pkgs.jdk17;
+  jre = pkgs.jre_minimal.override {
+    jdk = pkgs.jdk17;
+    modules = [ "java.base" "java.desktop" "java.logging" ];
+  };
+  gradle = pkgs.gradle;
 
-  nativeBuildInputs = [ pkgs.adoptopenjdk-jre-openj9-bin-8 pkgs.makeWrapper pkgs.unzip pkgs.mktemp ];
+  # Pre-fetch Maven dependencies for reproducible offline builds
+  gson = pkgs.fetchurl {
+    url = "https://repo1.maven.org/maven2/com/google/code/gson/gson/2.8.9/gson-2.8.9.jar";
+    hash = "sha256-05mSkYVd5JXJTHQ3YbirUXbP6r4oGlqw2OjUUyb9cD4=";
+  };
+  json-java = pkgs.fetchurl {
+    url = "https://repo1.maven.org/maven2/org/json/json/20211205/json-20211205.jar";
+    hash = "sha256-fzjWH7t+Kv3DHGvoZXIO5PyKDDwU+sTz7Ef9Pes5OcY=";
+  };
 
-  installPhase = ''
-    mkdir -p $out/lib
-    mkdir -p $out/bin
-    cp $src/DragonVoid.jar $out/lib
+  dragonvoid-jar = pkgs.stdenv.mkDerivation {
+    pname = "dragonvoid-jar";
+    version = "0.1.0";
+    src = pkgs.lib.cleanSource ./.;
 
-    cat <<EOF > $out/bin/dragonvoid
-    #!/usr/bin/env bash
+    nativeBuildInputs = [ gradle jdk ];
 
-    # The saves are stored inside the resource directory.
-    # We copy the resources to a temporary directory and link to a saves directory in your home folder
-    SAVE_DIR=''${SAVE_DIR-"\$HOME/.dragonvoid/"}
-    WORK_DIR=\$(${pkgs.mktemp}/bin/mktemp -d)
-    cd \$WORK_DIR 
-    ${pkgs.unzip}/bin/unzip -q $out/lib/DragonVoid.jar "res/*" -d \$WORK_DIR
-    if ! test -e "\$SAVE_DIR"
-    then
-        mkdir -p "\$SAVE_DIR"
-        cp -r \$WORK_DIR/res/saves/* "\$SAVE_DIR"
+    buildPhase = ''
+      export GRADLE_USER_HOME=$(mktemp -d)
+      export HOME=$(mktemp -d)
+
+      # Set up a local flat-dir repository with pre-fetched dependencies
+      mkdir -p libs
+      cp ${gson} libs/gson-2.8.9.jar
+      cp ${json-java} libs/json-20211205.jar
+
+      # Build the JAR using Gradle in offline mode with local deps
+      gradle --no-daemon --offline jar
+    '';
+
+    installPhase = ''
+      mkdir -p $out
+      cp build/libs/dragonvoid-*.jar $out/DragonVoid.jar
+    '';
+  };
+
+  mkWrapper = name: mainClass: pkgs.writeShellScriptBin name ''
+    JAR="${dragonvoid-jar}/DragonVoid.jar"
+    SAVE_DIR="''${SAVE_DIR:-$HOME/.dragonvoid}"
+    WORK_DIR=$(mktemp -d)
+    trap 'rm -rf "$WORK_DIR"' EXIT
+
+    cd "$WORK_DIR"
+    ${pkgs.unzip}/bin/unzip -q "$JAR" "res/*" -d "$WORK_DIR"
+
+    if [ ! -d "$SAVE_DIR" ]; then
+      mkdir -p "$SAVE_DIR"
+      cp -r "$WORK_DIR/res/saves/"* "$SAVE_DIR"
     fi
-    rm -rf \$WORK_DIR/res/saves
-    ln -s "\$SAVE_DIR" \$WORK_DIR/res/saves
-    ${pkgs.adoptopenjdk-jre-openj9-bin-8}/bin/java -cp $out/lib/DragonVoid.jar tbs.StartMainMenu
-    EOF
+    rm -rf "$WORK_DIR/res/saves"
+    ln -s "$SAVE_DIR" "$WORK_DIR/res/saves"
 
-    cat <<EOF > $out/bin/dragonvoid-arena
-    #!/usr/bin/env bash
-
-    # The saves are stored inside the resource directory.
-    # We copy the resources to a temporary directory and link to a saves directory in your home folder
-    SAVE_DIR=''${SAVE_DIR-"\$HOME/.dragonvoid/"}
-    WORK_DIR=\$(${pkgs.mktemp}/bin/mktemp -d)
-    cd \$WORK_DIR 
-    ${pkgs.unzip}/bin/unzip -q $out/lib/DragonVoid.jar "res/*" -d \$WORK_DIR
-    if ! test -e "\$SAVE_DIR"
-    then
-        mkdir -p "\$SAVE_DIR"
-        cp -r \$WORK_DIR/res/saves/* "\$SAVE_DIR"
-    fi
-    rm -rf \$WORK_DIR/res/saves
-    ln -s "\$SAVE_DIR" \$WORK_DIR/res/saves
-    ${pkgs.adoptopenjdk-jre-openj9-bin-8}/bin/java -cp $out/lib/DragonVoid.jar tbs.StartArenaMode
-    EOF
-
-    chmod 755 $out/bin/dragonvoid-arena
-    chmod 755 $out/bin/dragonvoid
+    ${jre}/bin/java -cp "$JAR" ${mainClass}
   '';
+
+  dragonvoid = pkgs.symlinkJoin {
+    name = "dragonvoid";
+    paths = [
+      (mkWrapper "dragonvoid" "tbs.StartMainMenu")
+      (mkWrapper "dragonvoid-arena" "tbs.StartArenaMode")
+    ];
+  };
+in
+{
+  inherit dragonvoid dragonvoid-jar;
 }

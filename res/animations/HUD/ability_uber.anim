@@ -1,0 +1,15 @@
+3
+HUD/
+ability_uber_normal
+ability_uber_hover
+ability_uber_click
+3
+	normal
+	1
+		0 500
+	hover
+	1
+		1 500
+	click
+	1
+		2 500

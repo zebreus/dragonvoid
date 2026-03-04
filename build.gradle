@@ -1,0 +1,87 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'dragonvoid'
+version = '0.1.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+// Use existing directory structure instead of Gradle's default
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['.']
+            include 'res/**'
+            // Exclude the tarball from processResources; it's handled by extractWorlds
+            exclude 'res/worlds.tar.gz'
+        }
+    }
+}
+
+repositories {
+    // Local flat-dir repository for nix offline builds
+    flatDir {
+        dirs 'libs'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.json:json:20211205'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'ISO-8859-1'
+}
+
+application {
+    mainClass = 'tbs.StartMainMenu'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'tbs.StartMainMenu'
+    }
+
+    // Include runtime dependencies in the JAR
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Task to extract worlds.tar.gz into build resources before jar is created
+tasks.register('extractWorlds', Copy) {
+    def worldsTar = file('res/worlds.tar.gz')
+    from tarTree(resources.gzip(worldsTar))
+    into layout.buildDirectory.dir("resources/main")
+}
+
+// Task to extract worlds.tar.gz into res/ for local development (running with java -jar)
+tasks.register('extractWorldsLocal', Copy) {
+    def worldsTar = file('res/worlds.tar.gz')
+    from tarTree(resources.gzip(worldsTar))
+    into '.'
+}
+
+tasks.named('processResources') {
+    finalizedBy 'extractWorlds'
+}
+
+tasks.named('jar') {
+    dependsOn 'extractWorlds'
+}
+
+tasks.named('run') {
+    dependsOn 'extractWorldsLocal'
+}
