@@ -8,13 +8,21 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class SaveManager {
+
+	public static String getSaveDir() {
+		String dir = System.getProperty("dragonvoid.savedir");
+		return dir != null ? dir : "res/saves";
+	}
+
 	public static String[] listSavegames() throws FileNotFoundException {
-		Scanner s = new Scanner(new File("res/saves/saves"));
+		Scanner s = new Scanner(new File(getSaveDir() + "/saves"));
 		LinkedList<String> ll = new LinkedList<String>();
 		while (s.hasNext()) {
 			ll.add(s.next());
@@ -54,7 +62,7 @@ public class SaveManager {
 
 	public void loadSave() throws FileNotFoundException {
 		sfr.saveLoadingProgress(0);
-		Scanner s = new Scanner(new File("res/saves/" + saveName + "/" + saveName + ".save"));
+		Scanner s = new Scanner(new File(getSaveDir() + "/" + saveName + "/" + saveName + ".save"));
 		name = s.next();
 		difficulty = s.nextInt();
 		sfr.saveLoadingProgress(50);
@@ -71,7 +79,7 @@ public class SaveManager {
 		@SuppressWarnings("rawtypes")
 		LinkedList<SaveProperty> ll = new LinkedList<SaveProperty>();
 		try {
-			Scanner s = new Scanner(new File("res/saves/" + saveName + "/" + filename + ".prop"));
+			Scanner s = new Scanner(new File(getSaveDir() + "/" + saveName + "/" + filename + ".prop"));
 			while (s.hasNext()) {
 				SaveProperty<?> prop = lineToProperty(s.next(), s.next(), s.next());
 				// ll.add(lineToProperty(s.next(),s.next(),s.next()));
@@ -83,22 +91,23 @@ public class SaveManager {
 			s.close();
 			return new PropertyList(ll, filename);
 		} catch (FileNotFoundException e) {
-			System.err.println("Couldn't load propertyFile res/saves/" + saveName + "/" + filename + ".prop");
+			System.err.println("Couldn't load propertyFile " + getSaveDir() + "/" + saveName + "/" + filename + ".prop");
 			e.printStackTrace();
 			return null;
 		}
 	}
 
 	public static void createSave(String name, int difficulty, SaveFeedbackReceiver sfr) throws IOException {
-		BufferedReader master = new BufferedReader(
-				new FileReader(new File("res/saves/" + Config.MASTER_SAVE + "/" + Config.MASTER_SAVE + ".msav")));
-		File save = new File("res/saves/" + name + "/" + name + ".save");
+		InputStream masterStream = SaveManager.class.getClassLoader().getResourceAsStream("res/saves/" + Config.MASTER_SAVE + "/" + Config.MASTER_SAVE + ".msav");
+		if (masterStream == null) throw new IOException("Master save template not found in JAR");
+		BufferedReader master = new BufferedReader(new InputStreamReader(masterStream));
+		File save = new File(getSaveDir() + "/" + name + "/" + name + ".save");
 		if (save.exists()) {
 			System.err.println("Couldn't create new savefile, because a save with the same name already exists");
 			sfr.creatingError();
 		} else {
 			sfr.creatingProgress(0);
-			new File("res/saves/" + name).mkdirs();
+			new File(getSaveDir() + "/" + name).mkdirs();
 			save.createNewFile();
 			PrintWriter pw = new PrintWriter(new FileOutputStream(save));
 			while (master.ready()) {
@@ -110,11 +119,12 @@ public class SaveManager {
 						pw.println(difficulty);
 					} else {
 						pw.println(line);
-						File prop = new File("res/saves/" + name + "/" + line + ".prop");
+						File prop = new File(getSaveDir() + "/" + name + "/" + line + ".prop");
 						prop.createNewFile();
 						PrintWriter propWriter = new PrintWriter(new FileOutputStream(prop));
-						BufferedReader propReader = new BufferedReader(
-								new FileReader(new File("res/saves/" + Config.MASTER_SAVE + "/" + line + ".prop")));
+						InputStream propStream = SaveManager.class.getClassLoader().getResourceAsStream("res/saves/" + Config.MASTER_SAVE + "/" + line + ".prop");
+						if (propStream == null) throw new IOException("Master prop template not found: " + line + ".prop");
+						BufferedReader propReader = new BufferedReader(new InputStreamReader(propStream));
 						while (propReader.ready()) {
 							propWriter.println(propReader.readLine());
 						}
@@ -128,19 +138,19 @@ public class SaveManager {
 			master.close();
 			pw.flush();
 			pw.close();
-			PrintWriter saves = new PrintWriter(new BufferedWriter(new FileWriter(new File("res/saves/saves"), true)));
+			PrintWriter saves = new PrintWriter(new BufferedWriter(new FileWriter(new File(getSaveDir() + "/saves"), true)));
 			saves.println(name);
 			saves.close();
 			sfr.creatingProgress(100);
 			sfr.created();
 			
-			new File("res/saves/" + name +"/chunks").mkdir();
+			new File(getSaveDir() + "/" + name +"/chunks").mkdir();
 			
-			new File("res/saves/" + name +"/chunks/walls").mkdir();
-			new File("res/saves/" + name +"/chunks/floor").mkdir();
-			new File("res/saves/" + name +"/chunks/triggers").mkdir();
-			new File("res/saves/" + name +"/chunks/items").mkdir();
-			new File("res/saves/" + name +"/chunks/characters").mkdir();
+			new File(getSaveDir() + "/" + name +"/chunks/walls").mkdir();
+			new File(getSaveDir() + "/" + name +"/chunks/floor").mkdir();
+			new File(getSaveDir() + "/" + name +"/chunks/triggers").mkdir();
+			new File(getSaveDir() + "/" + name +"/chunks/items").mkdir();
+			new File(getSaveDir() + "/" + name +"/chunks/characters").mkdir();
 		}
 	}
 
@@ -222,7 +232,7 @@ public class SaveManager {
 		for (PropertyList pl : property) {
 
 			try {
-				File file = new File("res/saves/" + saveName + "/" + pl.name + ".prop");
+				File file = new File(getSaveDir() + "/" + saveName + "/" + pl.name + ".prop");
 
 				LinkedList<String> filetext = new LinkedList<String>();
 
@@ -244,7 +254,7 @@ public class SaveManager {
 						linesplit[2] = "" + pl.getProperty(linesplit[1]);
 						filetext.set(i, linesplit[0] + " " + linesplit[1] + " " + linesplit[2]);
 					} else {
-						System.out.println("There is an error in your " + "res/saves/" + saveName + "/" + pl.name
+						System.out.println("There is an error in your " + getSaveDir() + "/" + saveName + "/" + pl.name
 								+ ".prop" + " save in line: " + (i + 1));
 					}
 

@@ -117,20 +117,20 @@ let
     WORK_DIR=$(mktemp -d)
     trap 'rm -rf "$WORK_DIR"' EXIT
 
-    cd "$WORK_DIR"
-    ${pkgs.unzip}/bin/unzip -q "$JAR" "res/*" -d "$WORK_DIR"
-
+    # Initialize save directory from JAR on first run
     if [ ! -d "$SAVE_DIR" ]; then
       mkdir -p "$SAVE_DIR"
-      cp -r "$WORK_DIR/res/saves/"* "$SAVE_DIR"
+      cd "$WORK_DIR"
+      ${pkgs.unzip}/bin/unzip -q "$JAR" "res/saves/*"
+      cp -r "$WORK_DIR/res/saves/"* "$SAVE_DIR/"
     fi
     # Always refresh the model save template (it is config, not user data)
+    cd "$WORK_DIR"
+    ${pkgs.unzip}/bin/unzip -q -o "$JAR" "res/saves/model/*"
     mkdir -p "$SAVE_DIR/model"
     cp -r "$WORK_DIR/res/saves/model/." "$SAVE_DIR/model/"
-    rm -rf "$WORK_DIR/res/saves"
-    ln -s "$SAVE_DIR" "$WORK_DIR/res/saves"
 
-    ${jre}/bin/java -cp "$JAR" ${mainClass}
+    ${jre}/bin/java -Ddragonvoid.savedir="$SAVE_DIR" -cp "$JAR" ${mainClass}
   '';
 
   dragonvoid = pkgs.symlinkJoin {

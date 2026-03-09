@@ -1,8 +1,8 @@
 package tbs;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -53,14 +53,16 @@ public class World {
 		return null;
 	}
 	public World(WorldFeedbackReceiver wfr, String world, int playerChunkX,
-			int playerChunkY) throws FileNotFoundException {
+			int playerChunkY) throws IOException {
 
 		
 		
 		path = "res/worlds/" + world + "/";
 		loadIDLists();
 		characters = new LinkedList<Character>();
-		Scanner s = new Scanner(new File(path + "world"));
+		InputStream is = World.class.getClassLoader().getResourceAsStream(path + "world");
+		if (is == null) throw new FileNotFoundException("Resource not found: " + path + "world");
+		Scanner s = new Scanner(is);
 		this.wfr = wfr;
 		width = s.nextInt();
 		height = s.nextInt();
@@ -76,7 +78,7 @@ public class World {
 		
 	}
 
-	private void loadIDLists() throws FileNotFoundException {
+	private void loadIDLists() throws IOException {
 		String path = this.path+"chunks/";
 
 		id_lists.put("characters", loadIDList(path, "characters"));
@@ -89,7 +91,7 @@ public class World {
 	}
 
 	public void loadWorld() throws IOException {
-		//Herausfinden wie viele Chunks geladen werden müssen
+		//Herausfinden wie viele Chunks geladen werden mï¿½ssen
 		int amountToLoad = 0;
 		for (int y = playerChunkY - LOAD_RANGE; y < playerChunkY + LOAD_RANGE; y++) {
 			for (int x = playerChunkX - LOAD_RANGE; x < playerChunkX + LOAD_RANGE; x++) {
@@ -108,7 +110,7 @@ public class World {
 					yetLoaded++;
 				}
 				
-				//Prozentzahl berechnen und an World Feedback Receiver zurückgeben.
+				//Prozentzahl berechnen und an World Feedback Receiver zurï¿½ckgeben.
 				int percent = ((int) ((100f * (float)((float)yetLoaded / (float)amountToLoad))));
 				if(Config.DEBUG){
 					DebugLayer.elements.put("Chunks too load",""+amountToLoad);
@@ -126,7 +128,7 @@ public class World {
 	}
 	
 	public Chunk loadChunk(int x, int y) throws IOException{
-		Chunk c = loaded[x][y] = new Chunk(this,x,y,path + "chunks/","res/saves/" + SaveManager.saveName + "/chunks",
+		Chunk c = loaded[x][y] = new Chunk(this,x,y,path + "chunks/",SaveManager.getSaveDir() + "/" + SaveManager.saveName + "/chunks",
 				chunks[x][y],id_lists);
 		characters.addAll(c.getCharacters());
 		Collections.sort(characters, new CharacterSpeedComparator());
@@ -151,7 +153,7 @@ public class World {
 				if(Config.DEBUG){
 					DebugLayer.pushError("Requested Chunk "+chunks[x][y]+" not loaded, loading it now");
 				}
-				loaded[x][y] = new Chunk(this,x,y,path+"chunks/","res/saves/" + SaveManager.saveName + "/chunks", chunks[x][y],id_lists);
+				loaded[x][y] = new Chunk(this,x,y,path+"chunks/",SaveManager.getSaveDir() + "/" + SaveManager.saveName + "/chunks", chunks[x][y],id_lists);
 				return loaded[x][y];
 			} catch (IOException e) {
 				if(Config.DEBUG){
@@ -167,7 +169,9 @@ public class World {
 		
 		Scanner s;
 		try {
-			s = new Scanner(new File(path + type +  "/id_list"));
+			InputStream is = World.class.getClassLoader().getResourceAsStream(path + type + "/id_list");
+			if (is == null) throw new FileNotFoundException("Resource not found: " + path + type + "/id_list");
+			s = new Scanner(is);
 
 		HashMap<Integer, String[]> map = new HashMap<Integer, String[]>();
 		
