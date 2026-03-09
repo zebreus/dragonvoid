@@ -121,6 +121,9 @@ let
       mkdir -p "$SAVE_DIR"
       cp -r "$WORK_DIR/res/saves/"* "$SAVE_DIR"
     fi
+    # Always refresh the model save template (it is config, not user data)
+    mkdir -p "$SAVE_DIR/model"
+    cp -r "$WORK_DIR/res/saves/model/." "$SAVE_DIR/model/"
     rm -rf "$WORK_DIR/res/saves"
     ln -s "$SAVE_DIR" "$WORK_DIR/res/saves"
 
