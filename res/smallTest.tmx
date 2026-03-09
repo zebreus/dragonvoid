@@ -10,337 +10,337 @@
  </tileset>
  <tileset firstgid="5" name="textures" tilewidth="24" tileheight="24" tilecount="111" columns="0">
   <tile id="2">
-   <image width="8" height="8" source="2D Grafiken/baum_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/tree_01.png"/>
   </tile>
   <tile id="3">
-   <image width="8" height="8" source="2D Grafiken/blume_hellblau.png"/>
+   <image width="8" height="8" source="2D Grafiken/flower_light_blue.png"/>
   </tile>
   <tile id="4">
-   <image width="8" height="8" source="2D Grafiken/blume_orange.png"/>
+   <image width="8" height="8" source="2D Grafiken/flower_orange.png"/>
   </tile>
   <tile id="5">
-   <image width="8" height="8" source="2D Grafiken/blume_pink.png"/>
+   <image width="8" height="8" source="2D Grafiken/flower_pink.png"/>
   </tile>
   <tile id="6">
-   <image width="8" height="8" source="2D Grafiken/blume_rot.png"/>
+   <image width="8" height="8" source="2D Grafiken/flower_red.png"/>
   </tile>
   <tile id="7">
-   <image width="16" height="16" source="2D Grafiken/Boxerzombie.png"/>
+   <image width="16" height="16" source="2D Grafiken/boxer_zombie.png"/>
   </tile>
   <tile id="8">
-   <image width="8" height="8" source="2D Grafiken/busch_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/bush_01.png"/>
   </tile>
   <tile id="9">
-   <image width="16" height="16" source="2D Grafiken/DasAuge.png"/>
+   <image width="16" height="16" source="2D Grafiken/the_eye.png"/>
   </tile>
   <tile id="10">
-   <image width="8" height="8" source="2D Grafiken/erde.png"/>
+   <image width="8" height="8" source="2D Grafiken/dirt.png"/>
   </tile>
   <tile id="11">
-   <image width="8" height="8" source="2D Grafiken/fichte_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/spruce_01.png"/>
   </tile>
   <tile id="12">
-   <image width="8" height="8" source="2D Grafiken/gras_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_01.png"/>
   </tile>
   <tile id="13">
-   <image width="8" height="8" source="2D Grafiken/gras_sand_links_rechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_sand_left_right.png"/>
   </tile>
   <tile id="14">
-   <image width="8" height="8" source="2D Grafiken/gras_sand_unten_oben.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_sand_bottom_top.png"/>
   </tile>
   <tile id="15">
-   <image width="8" height="8" source="2D Grafiken/gras_sandecke_obenlinks.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_sand_corner_top_left.png"/>
   </tile>
   <tile id="16">
-   <image width="8" height="8" source="2D Grafiken/gras_sandecke_obenrechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_sand_corner_top_right.png"/>
   </tile>
   <tile id="17">
-   <image width="8" height="8" source="2D Grafiken/gras_sandecke_untenlinks.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_sand_corner_bottom_left.png"/>
   </tile>
   <tile id="18">
-   <image width="8" height="8" source="2D Grafiken/gras_sandecke_untenrechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_sand_corner_bottom_right.png"/>
   </tile>
   <tile id="19">
-   <image width="8" height="8" source="2D Grafiken/gras_stein_links_rechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_stone_left_right.png"/>
   </tile>
   <tile id="20">
-   <image width="8" height="8" source="2D Grafiken/gras_stein_oben_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_stone_top_bottom.png"/>
   </tile>
   <tile id="21">
-   <image width="8" height="8" source="2D Grafiken/gras_stein_rechts_links.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_stone_right_left.png"/>
   </tile>
   <tile id="22">
-   <image width="8" height="8" source="2D Grafiken/gras_stein_unten_oben.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_stone_bottom_top.png"/>
   </tile>
   <tile id="23">
-   <image width="8" height="8" source="2D Grafiken/hoehle_eingang_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/cave_entrance_01.png"/>
   </tile>
   <tile id="24">
-   <image width="8" height="8" source="2D Grafiken/hoehle_eingang_02.png"/>
+   <image width="8" height="8" source="2D Grafiken/cave_entrance_02.png"/>
   </tile>
   <tile id="25">
-   <image width="8" height="8" source="2D Grafiken/hohesgras.png"/>
+   <image width="8" height="8" source="2D Grafiken/tall_grass.png"/>
   </tile>
   <tile id="27">
    <image width="8" height="8" source="2D Grafiken/sand_01.png"/>
   </tile>
   <tile id="28">
-   <image width="8" height="8" source="2D Grafiken/sand_grasecke_obenlinks.png"/>
+   <image width="8" height="8" source="2D Grafiken/sand_grass_corner_top_left.png"/>
   </tile>
   <tile id="29">
-   <image width="8" height="8" source="2D Grafiken/sand_grasecke_obenrechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/sand_grass_corner_top_right.png"/>
   </tile>
   <tile id="30">
-   <image width="8" height="8" source="2D Grafiken/sand_grasecke_untenlinks.png"/>
+   <image width="8" height="8" source="2D Grafiken/sand_grass_corner_bottom_left.png"/>
   </tile>
   <tile id="31">
-   <image width="8" height="8" source="2D Grafiken/sand_grasecke_untenrechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/sand_grass_corner_bottom_right.png"/>
   </tile>
   <tile id="32">
-   <image width="8" height="8" source="2D Grafiken/sand_wasser_links_rechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/sand_water_left_right.png"/>
   </tile>
   <tile id="33">
-   <image width="8" height="8" source="2D Grafiken/sand_wasser_oben_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/sand_water_top_bottom.png"/>
   </tile>
   <tile id="34">
-   <image width="8" height="8" source="2D Grafiken/sand_wasser_rechts_links.png"/>
+   <image width="8" height="8" source="2D Grafiken/sand_water_right_left.png"/>
   </tile>
   <tile id="35">
-   <image width="8" height="8" source="2D Grafiken/sand_wasser_unten_oben.png"/>
+   <image width="8" height="8" source="2D Grafiken/sand_water_bottom_top.png"/>
   </tile>
   <tile id="36">
-   <image width="8" height="8" source="2D Grafiken/schluessel_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/key_01.png"/>
   </tile>
   <tile id="37">
-   <image width="8" height="8" source="2D Grafiken/schwert_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/sword_01.png"/>
   </tile>
   <tile id="38">
-   <image width="16" height="16" source="2D Grafiken/Schwert16.png"/>
+   <image width="16" height="16" source="2D Grafiken/sword_16.png"/>
   </tile>
   <tile id="39">
    <image width="8" height="8" source="2D Grafiken/sponge_01.png"/>
   </tile>
   <tile id="40">
-   <image width="8" height="8" source="2D Grafiken/stein_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/stone_01.png"/>
   </tile>
   <tile id="41">
-   <image width="8" height="8" source="2D Grafiken/stein_02.png"/>
+   <image width="8" height="8" source="2D Grafiken/stone_02.png"/>
   </tile>
   <tile id="42">
-   <image width="8" height="8" source="2D Grafiken/stein_03.png"/>
+   <image width="8" height="8" source="2D Grafiken/stone_03.png"/>
   </tile>
   <tile id="43">
-   <image width="8" height="8" source="2D Grafiken/steinwand.png"/>
+   <image width="8" height="8" source="2D Grafiken/stone_wall.png"/>
   </tile>
   <tile id="44">
-   <image width="8" height="8" source="2D Grafiken/strand_wasserecke_obenlinks.png"/>
+   <image width="8" height="8" source="2D Grafiken/beach_water_corner_top_left.png"/>
   </tile>
   <tile id="45">
-   <image width="8" height="8" source="2D Grafiken/strand_wasserecke_obenrechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/beach_water_corner_top_right.png"/>
   </tile>
   <tile id="46">
-   <image width="8" height="8" source="2D Grafiken/strand_wasserecke_untenlinks.png"/>
+   <image width="8" height="8" source="2D Grafiken/beach_water_corner_bottom_left.png"/>
   </tile>
   <tile id="47">
-   <image width="8" height="8" source="2D Grafiken/strand_wasserecke_untenrechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/beach_water_corner_bottom_right.png"/>
   </tile>
   <tile id="48">
-   <image width="20" height="20" source="2D Grafiken/symbolgrafik.png"/>
+   <image width="20" height="20" source="2D Grafiken/icon.png"/>
   </tile>
   <tile id="49">
-   <image width="20" height="20" source="2D Grafiken/symbolgrafik_2.png"/>
+   <image width="20" height="20" source="2D Grafiken/icon_2.png"/>
   </tile>
   <tile id="50">
-   <image width="24" height="8" source="2D Grafiken/tuer_offen_0.png"/>
+   <image width="24" height="8" source="2D Grafiken/door_open_0.png"/>
   </tile>
   <tile id="51">
-   <image width="8" height="24" source="2D Grafiken/tuer_offen_90.png"/>
+   <image width="8" height="24" source="2D Grafiken/door_open_90.png"/>
   </tile>
   <tile id="52">
-   <image width="24" height="8" source="2D Grafiken/tuer_offen_180.png"/>
+   <image width="24" height="8" source="2D Grafiken/door_open_180.png"/>
   </tile>
   <tile id="53">
-   <image width="8" height="24" source="2D Grafiken/tuer_offen_270.png"/>
+   <image width="8" height="24" source="2D Grafiken/door_open_270.png"/>
   </tile>
   <tile id="54">
-   <image width="24" height="8" source="2D Grafiken/tuer_zu_0.png"/>
+   <image width="24" height="8" source="2D Grafiken/door_closed_0.png"/>
   </tile>
   <tile id="55">
-   <image width="8" height="24" source="2D Grafiken/tuer_zu_90.png"/>
+   <image width="8" height="24" source="2D Grafiken/door_closed_90.png"/>
   </tile>
   <tile id="56">
-   <image width="24" height="8" source="2D Grafiken/tuer_zu_180.png"/>
+   <image width="24" height="8" source="2D Grafiken/door_closed_180.png"/>
   </tile>
   <tile id="57">
-   <image width="8" height="24" source="2D Grafiken/tuer_zu_270.png"/>
+   <image width="8" height="24" source="2D Grafiken/door_closed_270.png"/>
   </tile>
   <tile id="58">
-   <image width="8" height="8" source="2D Grafiken/wandgras_gras.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_grass.png"/>
   </tile>
   <tile id="59">
-   <image width="8" height="8" source="2D Grafiken/wandstein_gras.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_grass.png"/>
   </tile>
   <tile id="60">
-   <image width="8" height="8" source="2D Grafiken/wandstein_stein.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone.png"/>
   </tile>
   <tile id="61">
-   <image width="8" height="8" source="2D Grafiken/wandstein_stein_90.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_90.png"/>
   </tile>
   <tile id="62">
-   <image width="8" height="8" source="2D Grafiken/wandstein_stein_180.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_180.png"/>
   </tile>
   <tile id="63">
-   <image width="8" height="8" source="2D Grafiken/wandstein_stein_270.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_270.png"/>
   </tile>
   <tile id="64">
-   <image width="8" height="8" source="2D Grafiken/wandstein_stein1.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_1.png"/>
   </tile>
   <tile id="65">
-   <image width="8" height="8" source="2D Grafiken/wandstein_stein2.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_2.png"/>
   </tile>
   <tile id="66">
-   <image width="8" height="8" source="2D Grafiken/wandstein_stein3.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_3.png"/>
   </tile>
   <tile id="67">
-   <image width="8" height="8" source="2D Grafiken/wandstein_stein4.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_4.png"/>
   </tile>
   <tile id="68">
-   <image width="8" height="8" source="2D Grafiken/wandstein_steinecke_linksoben.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_corner_top_left.png"/>
   </tile>
   <tile id="69">
-   <image width="8" height="8" source="2D Grafiken/wandstein_steinecke_obenrechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_corner_top_right.png"/>
   </tile>
   <tile id="70">
-   <image width="8" height="8" source="2D Grafiken/wandstein_steinecke_rechtsunten.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_corner_bottom_right.png"/>
   </tile>
   <tile id="71">
-   <image width="8" height="8" source="2D Grafiken/wandstein_steinecke_untenlinks.png"/>
+   <image width="8" height="8" source="2D Grafiken/wall_stone_corner_bottom_left.png"/>
   </tile>
   <tile id="72">
-   <image width="8" height="8" source="2D Grafiken/wasser_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/water_01.png"/>
   </tile>
   <tile id="73">
-   <image width="8" height="8" source="2D Grafiken/wasser_strandecke_obenlinks.png"/>
+   <image width="8" height="8" source="2D Grafiken/water_beach_corner_top_left.png"/>
   </tile>
   <tile id="74">
-   <image width="8" height="8" source="2D Grafiken/wasser_strandecke_obenrechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/water_beach_corner_top_right.png"/>
   </tile>
   <tile id="75">
-   <image width="8" height="8" source="2D Grafiken/wasser_strandecke_untenlinks.png"/>
+   <image width="8" height="8" source="2D Grafiken/water_beach_corner_bottom_left.png"/>
   </tile>
   <tile id="76">
-   <image width="8" height="8" source="2D Grafiken/wasser_strandecke_untenrechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/water_beach_corner_bottom_right.png"/>
   </tile>
   <tile id="77">
-   <image width="8" height="8" source="2D Grafiken/wasser_wellig_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/water_wave_01.png"/>
   </tile>
   <tile id="78">
-   <image width="8" height="8" source="2D Grafiken/wasser_wellig_02.png"/>
+   <image width="8" height="8" source="2D Grafiken/water_wave_02.png"/>
   </tile>
   <tile id="79">
-   <image width="8" height="8" source="2D Grafiken/wasser_wellig_03.png"/>
+   <image width="8" height="8" source="2D Grafiken/water_wave_03.png"/>
   </tile>
   <tile id="80">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_01.png"/>
   </tile>
   <tile id="81">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_ende_links.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_end_left.png"/>
   </tile>
   <tile id="82">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_ende_oben.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_end_top.png"/>
   </tile>
   <tile id="83">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_ende_rechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_end_right.png"/>
   </tile>
   <tile id="84">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_ende_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_end_bottom.png"/>
   </tile>
   <tile id="85">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_hochkant.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_vertical.png"/>
   </tile>
   <tile id="86">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_kreuzung.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_cross.png"/>
   </tile>
   <tile id="87">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_kurve_links_oben.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_curve_left_top.png"/>
   </tile>
   <tile id="88">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_kurve_oben_rechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_curve_top_right.png"/>
   </tile>
   <tile id="89">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_kurve_rechts_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_curve_right_bottom.png"/>
   </tile>
   <tile id="90">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_kurve_unten_links.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_curve_bottom_left.png"/>
   </tile>
   <tile id="91">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_t_links_oben_rechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_t_left_top_right.png"/>
   </tile>
   <tile id="92">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_t_links_oben_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_t_left_top_bottom.png"/>
   </tile>
   <tile id="93">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_t_links_rechts_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_t_left_right_bottom.png"/>
   </tile>
   <tile id="94">
-   <image width="8" height="8" source="2D Grafiken/weg_erde_t_oben_rechts_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_dirt_t_top_right_bottom.png"/>
   </tile>
   <tile id="95">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_01.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_01.png"/>
   </tile>
   <tile id="96">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_ende_links.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_end_left.png"/>
   </tile>
   <tile id="97">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_ende_oben.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_end_top.png"/>
   </tile>
   <tile id="98">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_ende_rechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_end_right.png"/>
   </tile>
   <tile id="99">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_ende_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_end_bottom.png"/>
   </tile>
   <tile id="100">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_hochkant.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_vertical.png"/>
   </tile>
   <tile id="101">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_kreuzung.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_cross.png"/>
   </tile>
   <tile id="102">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_kurve_links_oben.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_curve_left_top.png"/>
   </tile>
   <tile id="103">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_kurve_oben_rechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_curve_top_right.png"/>
   </tile>
   <tile id="104">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_kurve_rechts_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_curve_right_bottom.png"/>
   </tile>
   <tile id="105">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_kurve_unten_links.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_curve_bottom_left.png"/>
   </tile>
   <tile id="106">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_t_links_oben_rechts.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_t_left_top_right.png"/>
   </tile>
   <tile id="107">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_t_links_oben_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_t_left_top_bottom.png"/>
   </tile>
   <tile id="108">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_t_links_rechts_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_t_left_right_bottom.png"/>
   </tile>
   <tile id="109">
-   <image width="8" height="8" source="2D Grafiken/weg_stein_t_oben_rechts_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/path_stone_t_top_right_bottom.png"/>
   </tile>
   <tile id="110">
-   <image width="8" height="8" source="2D Grafiken/gras_sand_oben_unten.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_sand_top_bottom.png"/>
   </tile>
   <tile id="111">
-   <image width="8" height="8" source="2D Grafiken/gras_sand_rechts_links.png"/>
+   <image width="8" height="8" source="2D Grafiken/grass_sand_right_left.png"/>
   </tile>
   <tile id="112">
    <image width="8" height="8" source="2D Grafiken/bedrock.png"/>
   </tile>
   <tile id="113">
-   <image width="16" height="16" source="sprites/floor/Kaefer.png"/>
+   <image width="16" height="16" source="sprites/floor/beetle.png"/>
   </tile>
  </tileset>
  <layer name="floor" width="100" height="100">
