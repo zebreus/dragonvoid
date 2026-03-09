@@ -36,8 +36,8 @@ public Sprite(String path) throws IOException {
 try{
 InputStream is = Sprite.class.getClassLoader().getResourceAsStream("res/sprites/" + path + ".png");
 if (is == null) throw new IOException("Resource not found: res/sprites/" + path + ".png");
+try {
 BufferedImage image = ImageIO.read(is);
-is.close();
 
 name =  path.split("/")[path.split("/").length-1];
 width = image.getWidth();
@@ -62,6 +62,9 @@ for(int y = 0;y<height;y++){
 alpha[x][y] = 255;
 }
 }
+}
+} finally {
+is.close();
 }
 }catch(Exception e){
 System.err.println("Error loading res/sprites/"+path+".png");
