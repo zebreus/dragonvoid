@@ -94,8 +94,12 @@ tasks.named('jar') {
 // Exclude worlds from processResources: they are built separately and added
 // explicitly by the jar task above to avoid issues with read-only Nix store
 // copies and to prevent double-inclusion.
+// Also exclude build-time source files (TMX maps and JSON tiled exports) that
+// are only needed during the build pipeline, not at runtime.
 processResources {
     exclude 'res/worlds/**'
+    exclude 'res/*.tmx'
+    exclude 'res/*.json'
 }
 
 tasks.named('run') {
