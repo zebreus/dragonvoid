@@ -91,6 +91,13 @@ tasks.named('jar') {
     from("${projectDir}/res/worlds") { into "res/worlds" }
 }
 
+// Exclude worlds from processResources: they are built separately and added
+// explicitly by the jar task above to avoid issues with read-only Nix store
+// copies and to prevent double-inclusion.
+processResources {
+    exclude 'res/worlds/**'
+}
+
 tasks.named('run') {
     dependsOn 'generateWorldArena', 'generateWorldSmalltest', 'generateWorldLennartswelt'
 }
