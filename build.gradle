@@ -20,8 +20,6 @@ sourceSets {
         resources {
             srcDirs = ['.']
             include 'res/**'
-            // Exclude the tarball from processResources; it's handled by extractWorlds
-            exclude 'res/worlds.tar.gz'
         }
     }
 }
@@ -60,28 +58,39 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-// Task to extract worlds.tar.gz into build resources before jar is created
-tasks.register('extractWorlds', Copy) {
-    def worldsTar = file('res/worlds.tar.gz')
-    from tarTree(resources.gzip(worldsTar))
-    into layout.buildDirectory.dir("resources/main")
+// Task to generate world data from JSON source files using the Editor.
+// The JSON files (arena.json, smalltest.json, lennarts_testwelt.json) are pre-generated
+// tiled exports of the corresponding TMX source files and are committed to the repository.
+// In the Nix build they are regenerated from TMX via `tiled --export-map`.
+tasks.register('generateWorldArena', JavaExec) {
+    dependsOn 'compileJava'
+    classpath = configurations.runtimeClasspath + sourceSets.main.output
+    mainClass = 'tbs.editor.Editor'
+    args = ["${projectDir}/res/arena.json", "${projectDir}/res/worlds/arena"]
+    outputs.dir("${projectDir}/res/worlds/arena/world")
 }
 
-// Task to extract worlds.tar.gz into res/ for local development (running with java -jar)
-tasks.register('extractWorldsLocal', Copy) {
-    def worldsTar = file('res/worlds.tar.gz')
-    from tarTree(resources.gzip(worldsTar))
-    into '.'
+tasks.register('generateWorldSmalltest', JavaExec) {
+    dependsOn 'compileJava'
+    classpath = configurations.runtimeClasspath + sourceSets.main.output
+    mainClass = 'tbs.editor.Editor'
+    args = ["${projectDir}/res/smalltest.json", "${projectDir}/res/worlds/smalltest"]
+    outputs.dir("${projectDir}/res/worlds/smalltest/world")
 }
 
-tasks.named('processResources') {
-    finalizedBy 'extractWorlds'
+tasks.register('generateWorldLennartswelt', JavaExec) {
+    dependsOn 'compileJava'
+    classpath = configurations.runtimeClasspath + sourceSets.main.output
+    mainClass = 'tbs.editor.Editor'
+    args = ["${projectDir}/res/lennarts_testwelt.json", "${projectDir}/res/worlds/lennartswelt"]
+    outputs.dir("${projectDir}/res/worlds/lennartswelt/world")
 }
 
 tasks.named('jar') {
-    dependsOn 'extractWorlds'
+    dependsOn 'generateWorldArena', 'generateWorldSmalltest', 'generateWorldLennartswelt'
+    from("${projectDir}/res/worlds") { into "res/worlds" }
 }
 
 tasks.named('run') {
-    dependsOn 'extractWorldsLocal'
+    dependsOn 'generateWorldArena', 'generateWorldSmalltest', 'generateWorldLennartswelt'
 }

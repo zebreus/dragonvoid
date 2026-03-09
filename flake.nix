@@ -16,6 +16,9 @@
       in
       {
         packages.dragonvoid-jar = builds.dragonvoid-jar;
+        packages.dragonvoid-world-arena = builds.dragonvoid-world-arena;
+        packages.dragonvoid-world-smalltest = builds.dragonvoid-world-smalltest;
+        packages.dragonvoid-world-lennartswelt = builds.dragonvoid-world-lennartswelt;
         packages.default = builds.dragonvoid;
 
         apps.main = flake-utils.lib.mkApp {

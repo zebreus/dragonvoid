@@ -19,10 +19,13 @@ let
     hash = "sha256-fzjWH7t+Kv3DHGvoZXIO5PyKDDwU+sTz7Ef9Pes5OcY=";
   };
 
-  dragonvoid-jar = pkgs.stdenv.mkDerivation {
-    pname = "dragonvoid-jar";
+  src = pkgs.lib.cleanSource ./.;
+
+  # Build the Java classes (no world data) so the Editor tool can be run
+  dragonvoid-jar-code = pkgs.stdenv.mkDerivation {
+    pname = "dragonvoid-jar-code";
     version = "0.1.0";
-    src = pkgs.lib.cleanSource ./.;
+    inherit src;
 
     nativeBuildInputs = [ gradle jdk ];
 
@@ -35,8 +38,67 @@ let
       cp ${gson} libs/gson-2.8.9.jar
       cp ${json-java} libs/json-20211205.jar
 
-      # Build the JAR using Gradle in offline mode with local deps
-      gradle --no-daemon --offline jar
+      # Compile only – skip world-generation tasks entirely
+      gradle --no-daemon --offline compileJava
+    '';
+
+    installPhase = ''
+      mkdir -p $out/classes $out/libs
+      cp -r build/classes/java/main/. $out/classes/
+      cp ${gson} $out/libs/gson-2.8.9.jar
+      cp ${json-java} $out/libs/json-20211205.jar
+    '';
+  };
+
+  # Generate a single world from a TMX source file using tiled and the Editor
+  mkWorld = worldName: tmxFile: pkgs.stdenv.mkDerivation {
+    pname = "dragonvoid-world-${worldName}";
+    version = "0.1.0";
+    inherit src;
+
+    nativeBuildInputs = [ pkgs.tiled jdk ];
+
+    buildPhase = ''
+      # Export the TMX map to JSON using the tiled CLI
+      tiled --export-map --format json res/${tmxFile} world-export.json
+
+      # Convert the JSON to game world data using the Editor
+      java -cp "${dragonvoid-jar-code}/classes:${dragonvoid-jar-code}/libs/gson-2.8.9.jar:${dragonvoid-jar-code}/libs/json-20211205.jar" \
+        tbs.editor.Editor world-export.json "$out"
+    '';
+
+    installPhase = "# World data is written directly to \$out during buildPhase";
+  };
+
+  dragonvoid-world-arena = mkWorld "arena" "arena.tmx";
+  dragonvoid-world-smalltest = mkWorld "smalltest" "smallTest.tmx";
+  dragonvoid-world-lennartswelt = mkWorld "lennartswelt" "testproject.tmx";
+
+  dragonvoid-jar = pkgs.stdenv.mkDerivation {
+    pname = "dragonvoid-jar";
+    version = "0.1.0";
+    inherit src;
+
+    nativeBuildInputs = [ gradle jdk ];
+
+    buildPhase = ''
+      export GRADLE_USER_HOME=$(mktemp -d)
+      export HOME=$(mktemp -d)
+
+      # Set up a local flat-dir repository with pre-fetched dependencies
+      mkdir -p libs
+      cp ${gson} libs/gson-2.8.9.jar
+      cp ${json-java} libs/json-20211205.jar
+
+      # Copy the pre-built world data into the source tree so Gradle picks it up
+      mkdir -p res/worlds
+      cp -r ${dragonvoid-world-arena}/world res/worlds/arena
+      cp -r ${dragonvoid-world-smalltest}/world res/worlds/smalltest
+      cp -r ${dragonvoid-world-lennartswelt}/world res/worlds/lennartswelt
+
+      # Build the JAR – skip world-generation Gradle tasks (worlds already present)
+      gradle --no-daemon --offline jar \
+        -x generateWorldArena -x generateWorldSmalltest -x generateWorldLennartswelt
     '';
 
     installPhase = ''
@@ -73,5 +135,5 @@ let
   };
 in
 {
-  inherit dragonvoid dragonvoid-jar;
+  inherit dragonvoid dragonvoid-jar dragonvoid-world-arena dragonvoid-world-smalltest dragonvoid-world-lennartswelt;
 }
