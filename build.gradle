@@ -20,8 +20,6 @@ sourceSets {
         resources {
             srcDirs = ['.']
             include 'res/**'
-            // Exclude the tarball from processResources; it's handled by extractWorlds
-            exclude 'res/worlds.tar.gz'
         }
     }
 }
@@ -60,28 +58,71 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-// Task to extract worlds.tar.gz into build resources before jar is created
-tasks.register('extractWorlds', Copy) {
-    def worldsTar = file('res/worlds.tar.gz')
-    from tarTree(resources.gzip(worldsTar))
-    into layout.buildDirectory.dir("resources/main")
+// Export TMX source maps to JSON using the tiled CLI.
+// QT_QPA_PLATFORM=offscreen is required for headless (no display) environments.
+tasks.register('exportTmxArena', Exec) {
+    inputs.file("${projectDir}/res/arena.tmx")
+    outputs.file("${buildDir}/tiled/arena.json")
+    doFirst { mkdir "${buildDir}/tiled" }
+    environment 'QT_QPA_PLATFORM', 'offscreen'
+    commandLine 'tiled', '--export-map', "${projectDir}/res/arena.tmx", "${buildDir}/tiled/arena.json"
 }
 
-// Task to extract worlds.tar.gz into res/ for local development (running with java -jar)
-tasks.register('extractWorldsLocal', Copy) {
-    def worldsTar = file('res/worlds.tar.gz')
-    from tarTree(resources.gzip(worldsTar))
-    into '.'
+tasks.register('exportTmxSmalltest', Exec) {
+    inputs.file("${projectDir}/res/smallTest.tmx")
+    outputs.file("${buildDir}/tiled/smalltest.json")
+    doFirst { mkdir "${buildDir}/tiled" }
+    environment 'QT_QPA_PLATFORM', 'offscreen'
+    commandLine 'tiled', '--export-map', "${projectDir}/res/smallTest.tmx", "${buildDir}/tiled/smalltest.json"
 }
 
-tasks.named('processResources') {
-    finalizedBy 'extractWorlds'
+tasks.register('exportTmxLennartswelt', Exec) {
+    inputs.file("${projectDir}/res/testproject.tmx")
+    outputs.file("${buildDir}/tiled/lennartswelt.json")
+    doFirst { mkdir "${buildDir}/tiled" }
+    environment 'QT_QPA_PLATFORM', 'offscreen'
+    commandLine 'tiled', '--export-map', "${projectDir}/res/testproject.tmx", "${buildDir}/tiled/lennartswelt.json"
+}
+
+// Convert the tiled JSON exports to game world data using the Editor.
+tasks.register('generateWorldArena', JavaExec) {
+    dependsOn 'compileJava', 'exportTmxArena'
+    classpath = configurations.runtimeClasspath + sourceSets.main.output
+    mainClass = 'tbs.editor.Editor'
+    args = ["${buildDir}/tiled/arena.json", "${projectDir}/res/worlds/arena"]
+    outputs.dir("${projectDir}/res/worlds/arena/world")
+}
+
+tasks.register('generateWorldSmalltest', JavaExec) {
+    dependsOn 'compileJava', 'exportTmxSmalltest'
+    classpath = configurations.runtimeClasspath + sourceSets.main.output
+    mainClass = 'tbs.editor.Editor'
+    args = ["${buildDir}/tiled/smalltest.json", "${projectDir}/res/worlds/smalltest"]
+    outputs.dir("${projectDir}/res/worlds/smalltest/world")
+}
+
+tasks.register('generateWorldLennartswelt', JavaExec) {
+    dependsOn 'compileJava', 'exportTmxLennartswelt'
+    classpath = configurations.runtimeClasspath + sourceSets.main.output
+    mainClass = 'tbs.editor.Editor'
+    args = ["${buildDir}/tiled/lennartswelt.json", "${projectDir}/res/worlds/lennartswelt"]
+    outputs.dir("${projectDir}/res/worlds/lennartswelt/world")
 }
 
 tasks.named('jar') {
-    dependsOn 'extractWorlds'
+    dependsOn 'generateWorldArena', 'generateWorldSmalltest', 'generateWorldLennartswelt'
+    from("${projectDir}/res/worlds") { into "res/worlds" }
+}
+
+// Exclude worlds from processResources: they are built separately and added
+// explicitly by the jar task above to avoid issues with read-only Nix store
+// copies and to prevent double-inclusion.
+// Also exclude TMX source maps — they are only needed during the build pipeline.
+processResources {
+    exclude 'res/worlds/**'
+    exclude 'res/*.tmx'
 }
 
 tasks.named('run') {
-    dependsOn 'extractWorldsLocal'
+    dependsOn 'generateWorldArena', 'generateWorldSmalltest', 'generateWorldLennartswelt'
 }

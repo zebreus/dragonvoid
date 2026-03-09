@@ -3,6 +3,7 @@ package tbs;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -76,7 +77,9 @@ public class Chunk {
 				s = new Scanner(playerfile);
 
 			} else {
-				s = new Scanner(new File(defaultWorldPath + "/characters/" + chunkname));
+				InputStream is = Chunk.class.getClassLoader().getResourceAsStream(defaultWorldPath + "characters/" + chunkname);
+				if (is == null) throw new FileNotFoundException("Resource not found: " + defaultWorldPath + "characters/" + chunkname);
+				s = new Scanner(is);
 			}
 
 			for (int y = 0; y < 8; y++) {
@@ -167,7 +170,9 @@ public class Chunk {
 				s = new Scanner(playerfile);
 
 			} else {
-				s = new Scanner(new File(defaultWorldPath + "/" + type + "/" + chunkname));
+				InputStream is = Chunk.class.getClassLoader().getResourceAsStream(defaultWorldPath + type + "/" + chunkname);
+				if (is == null) throw new FileNotFoundException("Resource not found: " + defaultWorldPath + type + "/" + chunkname);
+				s = new Scanner(is);
 			}
 
 			for (int y = 0; y < 8; y++) {
@@ -253,7 +258,7 @@ public class Chunk {
 			return free;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
-			System.err.println("Hey, beim Pathfindig ist was schiefgegangen, kümmere dich darum");
+			System.err.println("Hey, beim Pathfindig ist was schiefgegangen, kï¿½mmere dich darum");
 			return false;
 
 		}
@@ -361,14 +366,16 @@ public class Chunk {
 		return 0;
 	}
 
-	private File getChunkFile(String type) {
+	private Scanner getChunkScanner(String type) throws FileNotFoundException {
 
 		File playerfile = new File(playerWorldpath + "/" + type + "/" + chunkname);
 
 		if (playerfile.exists()) {
-			return playerfile;
+			return new Scanner(playerfile);
 		} else {
-			return new File(defaultWorldPath + "/" + type + "/" + chunkname);
+			InputStream is = Chunk.class.getClassLoader().getResourceAsStream(defaultWorldPath + type + "/" + chunkname);
+			if (is == null) throw new FileNotFoundException("Resource not found: " + defaultWorldPath + type + "/" + chunkname);
+			return new Scanner(is);
 		}
 
 	}
@@ -391,7 +398,7 @@ public class Chunk {
 	private boolean IsFileSameAsIngame(String type) throws IOException {
 
 		try {
-			Scanner s = new Scanner(getChunkFile(type));
+			Scanner s = getChunkScanner(type);
 
 			Drawable[][] ingameSprites = null;
 

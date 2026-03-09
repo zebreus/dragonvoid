@@ -1,8 +1,8 @@
 package tbs;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class Animation implements Drawable{
@@ -58,7 +58,9 @@ public class Animation implements Drawable{
 	 */
 	public Animation(String file){
 		try{
-		Scanner s = new Scanner(new File("res/animations/"+file+".anim"));
+		InputStream is = Animation.class.getClassLoader().getResourceAsStream("res/animations/"+file+".anim");
+		if (is == null) throw new IOException("Resource not found: res/animations/"+file+".anim");
+		Scanner s = new Scanner(is);
 		name = file.split("/")[file.split("/").length-1];
 		speed = 1f;
 		sinceLast = 0;

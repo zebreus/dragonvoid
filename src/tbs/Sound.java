@@ -1,7 +1,7 @@
 package tbs;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.sound.sampled.AudioInputStream;
@@ -34,7 +34,9 @@ public class Sound {
 		clips = new ConcurrentLinkedQueue<Clip>();
 		this.path = path;
 		try{
-		this.next = AudioSystem.getAudioInputStream(new File("res/sounds/"+path+".wav"));
+		URL url = Sound.class.getClassLoader().getResource("res/sounds/"+path+".wav");
+		if (url == null) throw new IOException("Resource not found: res/sounds/"+path+".wav");
+		this.next = AudioSystem.getAudioInputStream(url);
 		}catch(Exception e){
 			System.err.println("Error loading audio file res/sounds/"+path+".wav");
 		}
@@ -77,7 +79,10 @@ public class Sound {
 			 public void run()
 			 {
 				 try {
-					next = AudioSystem.getAudioInputStream(new File("res/sounds/"+path+".wav"));
+					URL url = Sound.class.getClassLoader().getResource("res/sounds/"+path+".wav");
+					if (url != null) {
+						next = AudioSystem.getAudioInputStream(url);
+					}
 				} catch (UnsupportedAudioFileException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

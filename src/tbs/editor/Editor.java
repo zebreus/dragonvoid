@@ -66,6 +66,30 @@ public class Editor {
 		System.exit(0);
 	}
 
+	public Editor(String inputFile, String outputDir) {
+		sprites = new LinkedList<Sprites>();
+		animations = new LinkedList<Animations>();
+		chunks = new LinkedList<Chunks>();
+
+		Gson gson = new Gson();
+
+		try {
+			String fileContent = new String(Files.readAllBytes(Paths.get(inputFile)), StandardCharsets.UTF_8);
+			String preparedFileContent = prepareFileContent(fileContent);
+			inputJson = gson.fromJson(preparedFileContent, InputJson.class);
+
+			generateIdLists();
+			readData();
+			writeOutput(outputDir);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		System.out.println("finished");
+		System.exit(0);
+	}
+
 	private void transform() {
 
 		Gson gson = new Gson();
@@ -95,7 +119,10 @@ public class Editor {
 	}
 
 	private void writeOutput() {
-		String path = output.getSelectedFile().getAbsolutePath();
+		writeOutput(output.getSelectedFile().getAbsolutePath());
+	}
+
+	private void writeOutput(String path) {
 		new File(path.concat("/world")).mkdirs();
 		new File(path.concat("/world/chunks")).mkdirs();
 
@@ -228,7 +255,11 @@ public class Editor {
 
 	public static void main(String[] args) {
 
-		new Editor();
+		if (args.length >= 2) {
+			new Editor(args[0], args[1]);
+		} else {
+			new Editor();
+		}
 
 	}
 

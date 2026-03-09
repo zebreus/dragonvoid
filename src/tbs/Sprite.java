@@ -3,8 +3,8 @@ package tbs;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
@@ -34,8 +34,10 @@ String name;
 
 public Sprite(String path) throws IOException {
 try{
-File f = new File("res/sprites/" + path + ".png");
-BufferedImage image = ImageIO.read(f);
+InputStream is = Sprite.class.getClassLoader().getResourceAsStream("res/sprites/" + path + ".png");
+if (is == null) throw new IOException("Resource not found: res/sprites/" + path + ".png");
+try {
+BufferedImage image = ImageIO.read(is);
 
 name =  path.split("/")[path.split("/").length-1];
 width = image.getWidth();
@@ -60,6 +62,9 @@ for(int y = 0;y<height;y++){
 alpha[x][y] = 255;
 }
 }
+}
+} finally {
+is.close();
 }
 }catch(Exception e){
 System.err.println("Error loading res/sprites/"+path+".png");
