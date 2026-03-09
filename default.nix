@@ -59,8 +59,8 @@ let
     nativeBuildInputs = [ pkgs.tiled jdk ];
 
     buildPhase = ''
-      # Export the TMX map to JSON using the tiled CLI
-      tiled --export-map --format json res/${tmxFile} world-export.json
+      # Export the TMX map to JSON using the tiled CLI (format auto-detected from .json extension)
+      tiled --export-map res/${tmxFile} world-export.json
 
       # Convert the JSON to game world data using the Editor
       java -cp "${dragonvoid-jar-code}/classes:${dragonvoid-jar-code}/libs/gson-2.8.9.jar:${dragonvoid-jar-code}/libs/json-20211205.jar" \
