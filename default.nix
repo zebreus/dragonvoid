@@ -91,11 +91,14 @@ let
       cp ${gson} libs/gson-2.8.9.jar
       cp ${json-java} libs/json-20211205.jar
 
-      # Copy the pre-built world data into the source tree so Gradle picks it up
+      # Copy the pre-built world data into the source tree so Gradle picks it up.
+      # The mkWorld derivation output has structure: $out/world/{world,chunks/...}
+      # so we copy $out (not $out/world) to preserve the world/ subdirectory that
+      # the game expects at res/worlds/<name>/world/.
       mkdir -p res/worlds
-      cp -r ${dragonvoid-world-arena}/world res/worlds/arena
-      cp -r ${dragonvoid-world-smalltest}/world res/worlds/smalltest
-      cp -r ${dragonvoid-world-lennartswelt}/world res/worlds/lennartswelt
+      cp -r ${dragonvoid-world-arena} res/worlds/arena
+      cp -r ${dragonvoid-world-smalltest} res/worlds/smalltest
+      cp -r ${dragonvoid-world-lennartswelt} res/worlds/lennartswelt
 
       # Build the JAR – skip world-generation Gradle tasks (worlds already present)
       gradle --no-daemon --offline jar \
